@@ -5,6 +5,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -120,9 +121,9 @@
             <div class="option" onclick="selectLocation(this, 'internal')">Break Room</div>
         </div>
         <div class="external-locations">
-            <div class="option" onclick="selectLocation(this, 'external')">Chili's</div>
             <div class="option" onclick="selectLocation(this, 'external')">Client Office</div>
             <div class="option" onclick="selectLocation(this, 'external')">Corporate Office</div>
+            <div class="option" onclick="selectLocation(this, 'external')">Chili's</div>
             <div class="option" onclick="selectLocation(this, 'external')">Restaurant</div>
         </div>
     </div>
@@ -131,54 +132,54 @@
         <div class="section-title">Meeting Leader</div>
         <div class="leader-options">
             <div class="option selected" onclick="selectLeader(this)">Michael Scott</div>
+            <div class="option" onclick="selectLeader(this)">David Wallace</div>
+            <div class="option" onclick="selectLeader(this)">Jan Levinson</div>
             <div class="option" onclick="selectLeader(this)">Dwight Schrute</div>
             <div class="option" onclick="selectLeader(this)">Jim Halpert</div>
             <div class="option" onclick="selectLeader(this)">Andy Bernard</div>
-            <div class="option" onclick="selectLeader(this)">Jan Levinson</div>
-            <div class="option" onclick="selectLeader(this)">David Wallace</div>
         </div>
     </div>
     
     <div class="section">
         <div class="section-title">Participants</div>
         <div class="participants">
+            <div class="participant selected" onclick="toggleParticipant(this)">Michael</div>
+            <div class="participant" onclick="toggleParticipant(this)">David</div>
+            <div class="participant" onclick="toggleParticipant(this)">Jan</div>
+            <div class="participant" onclick="toggleParticipant(this)">Holly</div>
             <div class="participant selected" onclick="toggleParticipant(this)">Jim</div>
             <div class="participant selected" onclick="toggleParticipant(this)">Dwight</div>
-            <div class="participant selected" onclick="toggleParticipant(this)">Pam</div>
-            <div class="participant selected" onclick="toggleParticipant(this)">Michael</div>
-            <div class="participant" onclick="toggleParticipant(this)">Ryan</div>
-            <div class="participant" onclick="toggleParticipant(this)">Stanley</div>
             <div class="participant" onclick="toggleParticipant(this)">Phyllis</div>
+            <div class="participant" onclick="toggleParticipant(this)">Stanley</div>
+            <div class="participant" onclick="toggleParticipant(this)">Andy</div>
+            <div class="participant selected" onclick="toggleParticipant(this)">Pam</div>
+            <div class="participant" onclick="toggleParticipant(this)">Erin</div>
             <div class="participant" onclick="toggleParticipant(this)">Angela</div>
             <div class="participant" onclick="toggleParticipant(this)">Oscar</div>
             <div class="participant" onclick="toggleParticipant(this)">Kevin</div>
+            <div class="participant" onclick="toggleParticipant(this)">Toby</div>
+            <div class="participant" onclick="toggleParticipant(this)">Ryan</div>
+            <div class="participant" onclick="toggleParticipant(this)">Kelly</div>
             <div class="participant" onclick="toggleParticipant(this)">Meredith</div>
             <div class="participant" onclick="toggleParticipant(this)">Creed</div>
-            <div class="participant" onclick="toggleParticipant(this)">Kelly</div>
-            <div class="participant" onclick="toggleParticipant(this)">Toby</div>
-            <div class="participant" onclick="toggleParticipant(this)">Erin</div>
-            <div class="participant" onclick="toggleParticipant(this)">Andy</div>
-            <div class="participant" onclick="toggleParticipant(this)">Jan</div>
-            <div class="participant" onclick="toggleParticipant(this)">David</div>
-            <div class="participant" onclick="toggleParticipant(this)">Holly</div>
         </div>
     </div>
     
     <div class="section">
         <div class="section-title">Topic</div>
         <div class="internal-topics">
-            <div class="option selected" onclick="selectTopic(this, 'internal')">Team Building</div>
             <div class="option" onclick="selectTopic(this, 'internal')">Sales Strategy</div>
             <div class="option" onclick="selectTopic(this, 'internal')">Performance Review</div>
+            <div class="option selected" onclick="selectTopic(this, 'internal')">Team Building</div>
             <div class="option" onclick="selectTopic(this, 'internal')">Policy Update</div>
             <div class="option" onclick="selectTopic(this, 'internal')">Merger/Downsizing</div>
         </div>
         <div class="external-topics">
-            <div class="option" onclick="selectTopic(this, 'external')">Client Presentation</div>
             <div class="option" onclick="selectTopic(this, 'external')">Sales Pitch</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Client Presentation</div>
             <div class="option" onclick="selectTopic(this, 'external')">Negotiation</div>
-            <div class="option" onclick="selectTopic(this, 'external')">Corporate Review</div>
             <div class="option" onclick="selectTopic(this, 'external')">Partnership</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Corporate Review</div>
         </div>
     </div>
     
