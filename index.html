@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Office Meeting Predictor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #0056b3;
+            text-align: center;
+        }
+        .section {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .option {
+            flex: 1;
+            min-width: 120px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .option:hover {
+            border-color: #007bff;
+        }
+        .option.selected {
+            background-color: #e6f2ff;
+            border-color: #007bff;
+        }
+        .participants {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .participant {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-bottom: 5px;
+        }
+        .participant.selected {
+            background-color: #e6f2ff;
+            border-color: #007bff;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #result {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .internal-locations, .external-locations, 
+        .internal-topics, .external-topics {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .external-locations, .external-topics {
+            display: none;
+        }
+        .leader-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>The Office Meeting Success Predictor</h1>
+    
+    <div class="section">
+        <div class="section-title">Meeting Type</div>
+        <div class="options">
+            <div class="option selected" onclick="selectType('internal')">Internal Meeting</div>
+            <div class="option" onclick="selectType('external')">External Meeting</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Location</div>
+        <div class="internal-locations">
+            <div class="option selected" onclick="selectLocation(this, 'internal')">Conference Room</div>
+            <div class="option" onclick="selectLocation(this, 'internal')">Michael's Office</div>
+            <div class="option" onclick="selectLocation(this, 'internal')">Break Room</div>
+        </div>
+        <div class="external-locations">
+            <div class="option" onclick="selectLocation(this, 'external')">Chili's</div>
+            <div class="option" onclick="selectLocation(this, 'external')">Client Office</div>
+            <div class="option" onclick="selectLocation(this, 'external')">Corporate Office</div>
+            <div class="option" onclick="selectLocation(this, 'external')">Restaurant</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Meeting Leader</div>
+        <div class="leader-options">
+            <div class="option selected" onclick="selectLeader(this)">Michael Scott</div>
+            <div class="option" onclick="selectLeader(this)">Dwight Schrute</div>
+            <div class="option" onclick="selectLeader(this)">Jim Halpert</div>
+            <div class="option" onclick="selectLeader(this)">Andy Bernard</div>
+            <div class="option" onclick="selectLeader(this)">Jan Levinson</div>
+            <div class="option" onclick="selectLeader(this)">David Wallace</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Participants</div>
+        <div class="participants">
+            <div class="participant selected" onclick="toggleParticipant(this)">Jim</div>
+            <div class="participant selected" onclick="toggleParticipant(this)">Dwight</div>
+            <div class="participant selected" onclick="toggleParticipant(this)">Pam</div>
+            <div class="participant selected" onclick="toggleParticipant(this)">Michael</div>
+            <div class="participant" onclick="toggleParticipant(this)">Ryan</div>
+            <div class="participant" onclick="toggleParticipant(this)">Stanley</div>
+            <div class="participant" onclick="toggleParticipant(this)">Phyllis</div>
+            <div class="participant" onclick="toggleParticipant(this)">Angela</div>
+            <div class="participant" onclick="toggleParticipant(this)">Oscar</div>
+            <div class="participant" onclick="toggleParticipant(this)">Kevin</div>
+            <div class="participant" onclick="toggleParticipant(this)">Meredith</div>
+            <div class="participant" onclick="toggleParticipant(this)">Creed</div>
+            <div class="participant" onclick="toggleParticipant(this)">Kelly</div>
+            <div class="participant" onclick="toggleParticipant(this)">Toby</div>
+            <div class="participant" onclick="toggleParticipant(this)">Erin</div>
+            <div class="participant" onclick="toggleParticipant(this)">Andy</div>
+            <div class="participant" onclick="toggleParticipant(this)">Jan</div>
+            <div class="participant" onclick="toggleParticipant(this)">David</div>
+            <div class="participant" onclick="toggleParticipant(this)">Holly</div>
+        </div>
+    </div>
+    
+    <div class="section">
+        <div class="section-title">Topic</div>
+        <div class="internal-topics">
+            <div class="option selected" onclick="selectTopic(this, 'internal')">Team Building</div>
+            <div class="option" onclick="selectTopic(this, 'internal')">Sales Strategy</div>
+            <div class="option" onclick="selectTopic(this, 'internal')">Performance Review</div>
+            <div class="option" onclick="selectTopic(this, 'internal')">Policy Update</div>
+            <div class="option" onclick="selectTopic(this, 'internal')">Merger/Downsizing</div>
+        </div>
+        <div class="external-topics">
+            <div class="option" onclick="selectTopic(this, 'external')">Client Presentation</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Sales Pitch</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Negotiation</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Corporate Review</div>
+            <div class="option" onclick="selectTopic(this, 'external')">Partnership</div>
+        </div>
+    </div>
+    
+    <button onclick="predictMeeting()">Predict Meeting Success</button>
+    
+    <div id="result">
+        <h2 id="prediction">Prediction: <span id="prediction-text"></span></h2>
+        <p id="probability"></p>
+        
+        <h3>Meeting Details:</h3>
+        <ul id="details"></ul>
+        
+        <h3>Tips to Improve Meeting Success:</h3>
+        <ul id="tips"></ul>
+    </div>
+    
+    <script>
+        // Track current selections
+        let currentMeetingType = 'internal';
+        let currentLeader = 'Michael Scott';
+        
+        // Simple functions for selecting options
+        function selectType(type) {
+            // Update selected style
+            document.querySelectorAll('.section:nth-child(2) .option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            const selectedOption = type === 'internal' 
+                ? document.querySelectorAll('.section:nth-child(2) .option')[0]
+                : document.querySelectorAll('.section:nth-child(2) .option')[1];
+            
+            selectedOption.classList.add('selected');
+            currentMeetingType = type;
+            
+            // Show/hide appropriate location and topic options
+            if (type === 'internal') {
+                document.querySelector('.internal-locations').style.display = 'flex';
+                document.querySelector('.external-locations').style.display = 'none';
+                document.querySelector('.internal-topics').style.display = 'flex';
+                document.querySelector('.external-topics').style.display = 'none';
+                
+                // Select first option in each
+                document.querySelectorAll('.internal-locations .option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                document.querySelectorAll('.internal-topics .option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                document.querySelector('.internal-locations .option').classList.add('selected');
+                document.querySelector('.internal-topics .option').classList.add('selected');
+            } else {
+                document.querySelector('.internal-locations').style.display = 'none';
+                document.querySelector('.external-locations').style.display = 'flex';
+                document.querySelector('.internal-topics').style.display = 'none';
+                document.querySelector('.external-topics').style.display = 'flex';
+                
+                // Select first option in each
+                document.querySelectorAll('.external-locations .option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                document.querySelectorAll('.external-topics .option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                document.querySelector('.external-locations .option').classList.add('selected');
+                document.querySelector('.external-topics .option').classList.add('selected');
+            }
+        }
+        
+        function selectLocation(element, type) {
+            // Remove selected from all
+            document.querySelectorAll('.' + type + '-locations .option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select clicked
+            element.classList.add('selected');
+        }
+        
+        function selectLeader(element) {
+            // Remove selected from all
+            document.querySelectorAll('.leader-options .option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select clicked
+            element.classList.add('selected');
+            currentLeader = element.textContent;
+            
+            // Update participant selection
+            updateParticipantsForLeader();
+        }
+        
+        function updateParticipantsForLeader() {
+            // Deselect the leader from participants if selected
+            document.querySelectorAll('.participant').forEach(p => {
+                if (p.textContent === currentLeader.split(' ')[0]) {
+                    p.classList.remove('selected');
+                }
+            });
+        }
+        
+        function toggleParticipant(element) {
+            // Don't allow selecting the current leader
+            if (currentLeader.startsWith(element.textContent)) {
+                alert('This person is already the meeting leader');
+                return;
+            }
+            
+            element.classList.toggle('selected');
+        }
+        
+        function selectTopic(element, type) {
+            // Remove selected from all
+            document.querySelectorAll('.' + type + '-topics .option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            
+            // Select clicked
+            element.classList.add('selected');
+        }
+        
+        function predictMeeting() {
+            // Get selected options
+            const meetingType = currentMeetingType;
+            const isExternal = meetingType === 'external';
+            
+            let location;
+            if (isExternal) {
+                location = document.querySelector('.external-locations .option.selected').textContent;
+            } else {
+                location = document.querySelector('.internal-locations .option.selected').textContent;
+            }
+            
+            const leader = currentLeader;
+            
+            let topic;
+            if (isExternal) {
+                topic = document.querySelector('.external-topics .option.selected').textContent;
+            } else {
+                topic = document.querySelector('.internal-topics .option.selected').textContent;
+            }
+            
+            // Count participants
+            const participants = document.querySelectorAll('.participant.selected');
+            const participantNames = Array.from(participants).map(p => p.textContent);
+            const participantCount = participants.length;
+            
+            // Make sure there's at least one participant
+            if (participantCount === 0) {
+                alert('Please select at least one participant');
+                return;
+            }
+            
+            // Generate prediction
+            let successProb = 0.5;
+            
+            // Location effects
+            if (location === 'Conference Room') {
+                successProb -= 0.15;
+            } else if (location === "Michael's Office") {
+                successProb += 0.15;
+            } else if (location === "Chili's") {
+                successProb += 0.35;
+            } else if (location === "Restaurant") {
+                successProb += 0.20;
+            }
+            
+            // Meeting type
+            if (isExternal) {
+                successProb += 0.10;
+            }
+            
+            // Leader effects
+            if (leader === 'Michael Scott') {
+                // Base already accounted for
+            } else if (leader === 'Dwight Schrute') {
+                successProb += 0.15;
+            } else if (leader === 'Jim Halpert') {
+                successProb += 0.05;
+            } else if (leader === 'Andy Bernard') {
+                successProb -= 0.10;
+            } else if (leader === 'Jan Levinson') {
+                successProb += 0.10;
+            } else if (leader === 'David Wallace') {
+                successProb += 0.15;
+            }
+            
+            // Topic effects
+            if (topic === 'Team Building') {
+                successProb -= 0.10;
+            } else if (topic === 'Sales Strategy' || topic === 'Sales Pitch') {
+                successProb += 0.10;
+            } else if (topic === 'Merger/Downsizing') {
+                successProb -= 0.05;
+            }
+            
+            // Participant count
+            if (participantCount > 6) {
+                successProb -= 0.05;
+            }
+            
+            // Character effects
+            const hasToby = participantNames.includes('Toby');
+            const hasPam = participantNames.includes('Pam');
+            const hasJim = participantNames.includes('Jim');
+            const hasDwight = participantNames.includes('Dwight');
+            const hasHolly = participantNames.includes('Holly');
+            const hasRyan = participantNames.includes('Ryan');
+            const hasKelly = participantNames.includes('Kelly');
+            
+            // Michael + Toby effect
+            if (leader === 'Michael Scott' && hasToby) {
+                successProb -= 0.20;
+            }
+            
+            // Jim + Pam effect
+            if (hasPam && hasJim) {
+                successProb += 0.10;
+            }
+            
+            // Jim + Dwight antagonism
+            if ((leader === 'Jim' && hasDwight) || (leader === 'Dwight' && hasJim)) {
+                successProb -= 0.10;
+            }
+            
+            // Michael + Holly positive effect
+            if ((leader === 'Michael Scott' && hasHolly) || (leader === 'Holly' && leader.includes('Michael'))) {
+                successProb += 0.15;
+            }
+            
+            // Ryan + Kelly drama
+            if (hasRyan && hasKelly) {
+                successProb -= 0.05;
+            }
+            
+            // Ensure probability between 0 and 1
+            successProb = Math.max(0, Math.min(1, successProb));
+            
+            // Display result
+            const resultElem = document.getElementById('result');
+            const predictionTextElem = document.getElementById('prediction-text');
+            const probabilityElem = document.getElementById('probability');
+            const detailsElem = document.getElementById('details');
+            const tipsElem = document.getElementById('tips');
+            
+            let resultText, resultColor;
+            if (successProb >= 0.7) {
+                resultText = "Highly Likely to Succeed";
+                resultColor = "green";
+            } else if (successProb >= 0.5) {
+                resultText = "Somewhat Likely to Succeed";
+                resultColor = "lightgreen";
+            } else if (successProb >= 0.3) {
+                resultText = "Somewhat Likely to Fail";
+                resultColor = "orange";
+            } else {
+                resultText = "Highly Likely to Fail";
+                resultColor = "red";
+            }
+            
+            predictionTextElem.textContent = resultText;
+            predictionTextElem.style.color = resultColor;
+            probabilityElem.textContent = `Success probability: ${Math.round(successProb * 100)}%`;
+            
+            // Show meeting details
+            detailsElem.innerHTML = '';
+            addDetail("Meeting Type", isExternal ? "External" : "Internal");
+            addDetail("Location", location);
+            addDetail("Leader", leader);
+            addDetail("Topic", topic);
+            addDetail("Participant Count", participantCount);
+            addDetail("Participants", participantNames.join(", "));
+            
+            // Generate tips
+            tipsElem.innerHTML = '';
+            
+            if (location === 'Conference Room') {
+                addTip("Consider a different location than the conference room");
+            }
+            
+            if (leader === 'Michael Scott' && hasToby) {
+                addTip("Avoid having Toby in meetings led by Michael");
+            }
+            
+            if (participantCount > 6) {
+                addTip("Consider reducing the number of participants for better focus");
+            }
+            
+            if ((leader === 'Jim' && hasDwight) || (leader === 'Dwight' && hasJim)) {
+                addTip("Jim and Dwight may clash in meetings");
+            }
+            
+            if (hasRyan && hasKelly) {
+                addTip("Ryan and Kelly drama may distract from the meeting");
+            }
+            
+            if (location === "Chili's" || location === "Restaurant") {
+                addTip("Good choice with " + location + " - external locations tend to be successful");
+            }
+            
+            if (hasPam && hasJim) {
+                addTip("Jim and Pam work well together");
+            }
+            
+            if (leader === 'Michael Scott' && hasHolly) {
+                addTip("Michael and Holly have great chemistry in meetings");
+            }
+            
+            if (leader === 'David Wallace') {
+                addTip("David's leadership brings structure to meetings");
+            }
+            
+            if (topic === 'Team Building' && leader === 'Michael Scott') {
+                addTip("Michael's team building meetings often go off track");
+            }
+            
+            // Ensure at least one tip is shown by adding fallback tips if none were generated
+            if (document.getElementById('tips').children.length === 0) {
+                // Leader-specific fallback tips - cover ALL possible leaders
+                if (leader === 'Michael Scott') {
+                    addTip("Michael has a medium positive influence on meeting success when he actively participates");
+                } else if (leader === 'Dwight Schrute') {
+                    addTip("Dwight's structured approach can help maintain meeting focus");
+                } else if (leader === 'Jim Halpert') {
+                    addTip("Jim works best when paired with Pam in meetings");
+                } else if (leader === 'Andy Bernard') {
+                    addTip("Andy benefits from clear agendas and time management");
+                } else if (leader === 'Jan Levinson') {
+                    addTip("Jan's corporate experience adds structure to meetings");
+                } else if (leader === 'David Wallace') {
+                    addTip("David's leadership style tends to keep meetings on track");
+                } else {
+                    // Generic fallback if somehow none of the options match
+                    addTip("Clear agendas and defined roles improve meeting outcomes");
+                }
+                
+                // Location fallback tips - cover ALL locations
+                if (location === "Michael's Office") {
+                    addTip("Michael's Office creates a more informal atmosphere that can be beneficial");
+                } else if (location === "Chili's") {
+                    addTip("External locations like Chili's have a positive effect on meeting outcomes");
+                } else if (location === "Break Room") {
+                    addTip("The Break Room's casual setting can encourage more authentic discussions");
+                } else if (location === "Client Office") {
+                    addTip("At Client Offices, preparation and professional appearance are critical");
+                } else if (location === "Corporate Office") {
+                    addTip("Corporate Office meetings benefit from preparation and conciseness");
+                } else if (location === "Restaurant") {
+                    addTip("Restaurant settings help clients feel more comfortable");
+                }
+                
+                // Topic fallback tips
+                if (topic === "Team Building") {
+                    addTip("Team Building is most effective when inclusive and respectful");
+                } else if (topic === "Sales Strategy" || topic === "Sales Pitch") {
+                    addTip("Sales discussions benefit from concrete numbers and specific examples");
+                } else if (topic === "Performance Review") {
+                    addTip("Performance Reviews should balance honesty with constructive feedback");
+                } else if (topic === "Policy Update") {
+                    addTip("Policy Updates should address potential concerns proactively");
+                } else if (topic === "Merger/Downsizing") {
+                    addTip("Sensitive topics require clear communication and transparency");
+                } else if (topic === "Client Presentation") {
+                    addTip("Client Presentations should be tailored to the client's specific needs");
+                } else if (topic === "Negotiation") {
+                    addTip("Negotiations benefit from preparing fallback positions in advance");
+                } else if (topic === "Corporate Review") {
+                    addTip("Corporate Reviews require thorough preparation with data and metrics");
+                } else if (topic === "Partnership") {
+                    addTip("Partnership discussions should emphasize mutual benefits");
+                }
+            }
+
+            // Limit to 5 random tips if we have more than 5
+            const tipElements = document.getElementById('tips').children;
+            if (tipElements.length > 5) {
+                // Convert HTMLCollection to Array for easier manipulation
+                const tipsArray = Array.from(tipElements);
+                
+                // Shuffle array using Fisher-Yates algorithm
+                for (let i = tipsArray.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [tipsArray[i], tipsArray[j]] = [tipsArray[j], tipsArray[i]];
+                }
+                
+                // Clear tips container
+                tipsElem.innerHTML = '';
+                
+                // Add back only 5 random tips
+                for (let i = 0; i < 5; i++) {
+                    tipsElem.appendChild(tipsArray[i]);
+                }
+            }
+
+            // Show result
+            resultElem.style.display = 'block';
+            
+            // Scroll to results
+            resultElem.scrollIntoView({behavior: 'smooth'});
+        }
+        
+        function addDetail(label, value) {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${label}:</strong> ${value}`;
+            document.getElementById('details').appendChild(li);
+        }
+        
+        function addTip(text) {
+            const li = document.createElement('li');
+            li.textContent = text;
+            document.getElementById('tips').appendChild(li);
+        }
+        
+        // Initialize leader handling
+        document.addEventListener('DOMContentLoaded', function() {
+            updateParticipantsForLeader();
+        });
+    </script>
+</body>
+</html>
